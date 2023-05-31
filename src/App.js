@@ -1,9 +1,10 @@
 import React, {useState, useEffect, useCallback} from "react"
 import Die from "./Die"
+import ToggleSwitch from "./ToggleSwitch"
 import {nanoid} from "nanoid"
 import ConfettiExplosion from 'react-confetti-explosion';
 
-import './App.css';
+import './App.scss';
 
 export default function App() {
 
@@ -13,6 +14,7 @@ export default function App() {
     const [stopwatch, setStopwatch] = useState(0)
     const [best, setBest] = useState(() => JSON.parse(localStorage.getItem('stats')) || {time: 0, rolls: 0})
     const [startGame, setStartGame] = useState(false)
+    const [powerBowMode, setPowerBowMode] = useState(false)
 
     function start() {
         setStartGame(true)
@@ -121,15 +123,43 @@ export default function App() {
             holdDice={() => holdDice(die.id)}
         />
     ))
+
+    const togglePowerBowMode = () => {
+        setPowerBowMode(!powerBowMode)
+    }
     
     return (
-        <>
+        <div className={`outermost ${powerBowMode? 'powerBow' : ''}`}>
             <main>
                 <h1 className="title">Tenzies</h1>
+                <div className="toggle-container">
+                    <ToggleSwitch
+                        toggleHandler={togglePowerBowMode}
+                        powerBowMode={powerBowMode}
+                    />
+                </div>
                 <p className="instructions">Roll until all dice are the same. 
                 Click each die to freeze it at its current value between rolls.</p>
                 <div className="dice-container">
                     {diceElements}
+                </div>
+                {tenzies && <ConfettiExplosion />}
+                <div className="button-container">
+                    {!startGame ? 
+                        <button
+                        className="start-game"
+                            onClick={start} 
+                        >
+                            Start Game
+                        </button>
+                    :
+                        <button 
+                            className="roll-dice" 
+                            onClick={rollDice}
+                        >
+                            {tenzies ? "New Game" : "Roll"}
+                        </button>
+                    }
                 </div>
                 <div className="stats-container">
                     <div className="label">Rolls: </div>
@@ -137,28 +167,12 @@ export default function App() {
                     <div className="label">Time:</div>
                     <div className="stopwatch">{stopwatch.toFixed(2)}</div>
                 </div>
-                {tenzies && <ConfettiExplosion />}
                 <div className="stats-container">
                     <div className="label">Best Rolls: </div>
                     <div className="rolls-counter">{best.rolls}</div>
                     <div className="label">Best Time:</div>
                     <div className="stopwatch">{best.time.toFixed(2)}</div>
                 </div>
-                {!startGame ? 
-                    <button
-                    className="start-game"
-                        onClick={start} 
-                    >
-                        Start Game
-                    </button>
-                :
-                    <button 
-                        className="roll-dice" 
-                        onClick={rollDice}
-                    >
-                        {tenzies ? "New Game" : "Roll"}
-                    </button>
-                }
             </main>
             <footer className="footer">
                 <div class="dragon-face">
@@ -174,6 +188,6 @@ export default function App() {
                     <div class="mouth"></div>
                 </div>
             </footer>
-        </>
+        </div>
     )
 }

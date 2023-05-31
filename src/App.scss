@@ -4,14 +4,25 @@
 
 body {
     margin: 0;
-    background-color: #88c4ea;
     padding: 0;
     font-family: 'Karla', sans-serif;
+    transition: transform 0.5s;
+}
+
+.outermost {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    background-color: #88c4ea;
+    padding: 20px;
+    font-family: 'Karla', sans-serif;
+    &.powerBow {
+        background-color: #FF00CC;
+    }
 }
 
 main {
     background-color: #F5F5F5;
-    height: 460px;
     max-width: 800px;
     border-radius: 5px;
     padding: 20px;
@@ -20,11 +31,15 @@ main {
     justify-content: space-around;
     align-items: center;
     margin: 20px auto;
+    
 }
 
 .title {
     font-size: 40px;
     margin: 0;
+    .powerBow & {
+        color: #FF00CC;
+    }
 }
 
 .instructions {
@@ -38,7 +53,13 @@ main {
     display: grid;
     grid-template: auto auto / repeat(5, 1fr);
     gap: 20px;
-    margin-bottom: 20px;
+}
+
+.button-container {
+    margin: 20px auto;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
 }
 
 .die-face {
@@ -58,7 +79,10 @@ main {
     width: 10px;
     height: 10px;
     background-color: black;
-    border-radius: 5px
+    border-radius: 5px;
+    .powerBow & {
+        background-color: #FF00CC;
+    }
 }
 
 .pips-1 .pip-1,
@@ -136,6 +160,9 @@ main {
     font-size: 1.2rem;
     font-family: 'Karla', sans-serif;
     cursor: pointer;
+    .powerBow & {
+        background-color: #FF00CC;
+    }
 }
 
 .roll-dice:focus,
@@ -155,6 +182,7 @@ start-game:focus {
     padding: 6px 12px;
     border-radius: 6px;
     margin-bottom: 20px;
+    margin-top: 0;
     display: flex;
     justify-content: flex-start;
     width: 300px;
@@ -182,7 +210,7 @@ footer {
 
 .dragon-face {
     width: 150px;
-    height: 200px;
+    height: 180px;
     border-radius: 50%;
     background-color: green;
     position: relative;
@@ -263,4 +291,93 @@ footer {
   transform: rotate(45deg);
 }
 
-
+.toggle-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+    > div {
+        padding: 0 4px;
+    }
+}
+.toggle-switch {
+  position: relative;
+  width: 75px;
+  display: inline-block;
+  vertical-align: middle;
+  text-align: left;
+  &-checkbox {
+    display: none;
+  }
+  &-label {
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+    border: 0 solid #bbb;
+    border-radius: 20px;
+    margin: 0;
+  }
+  &-inner {
+    display: block;
+    width: 200%;
+    margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+    &:before,
+    &:after {
+      display: block;
+      float: left;
+      width: 50%;
+      height: 34px;
+      padding: 0;
+      line-height: 34px;
+      font-size: 14px;
+      color: white;
+      font-weight: bold;
+      box-sizing: border-box;
+    }
+    &:before {
+      content: "ON";
+      text-transform: uppercase;
+      padding-left: 10px;
+      background-color: #FF00CC;
+      color: #fff;
+    }
+  }
+  &-disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+    &:before {
+      background-color: #ddd;
+      cursor: not-allowed;
+    }
+  }
+  &-inner:after {
+    content: "OFF";
+    text-transform: uppercase;
+    padding-right: 10px;
+    background-color: #bbb;
+    color: #fff;
+    text-align: right;
+  }
+  &-switch {
+    display: block;
+    width: 24px;
+    margin: 5px;
+    background: #fff;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 40px;
+    border: 0 solid #bbb;
+    border-radius: 20px;
+    transition: all 0.3s ease-in 0s;
+  }
+  &-checkbox:checked + &-label {
+    .toggle-switch-inner {
+      margin-left: 0;
+    }
+    .toggle-switch-switch {
+      right: 0px;
+    }
+  }
+}
